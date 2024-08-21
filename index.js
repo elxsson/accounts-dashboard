@@ -25,6 +25,7 @@ const operation = ()=> {
             case 'Consultar saldo':
                 break
             case 'Depositar':
+                deposit()
                 break
             case 'Sacar':
                 break
@@ -45,8 +46,7 @@ const header = (text)=>{
 
 // criar uma conta
 
-
-const createAccount = (text)=> {
+function createAccount(text) {
     header(text)
     console.log(chalk.green('Configure sua conta a seguir'))
     buildAccount()
@@ -58,7 +58,7 @@ const buildAccount = ()=> {
         name: 'accountName',
         message: 'Digite um nome para sua conta: '
 
-    }]).then((answer) => {
+    },]).then((answer) => {
 
         const accountName = answer['accountName']
 
@@ -72,7 +72,7 @@ const buildAccount = ()=> {
             return
         }
 
-        fs.writeFileSync('accounts/${accountName}.json',
+        fs.writeFileSync(`accounts/${accountName}.json`,
             '{"balance": 0}',
             (err) => console.log(err))
         
@@ -80,4 +80,15 @@ const buildAccount = ()=> {
         operation()
 
     }).catch(err => { console.log(err) })
+}
+
+// verificar se a conta existe
+
+const checkAccount = (accountName)=>{
+    if(!fs.existsSync(`accounts/${accountName}.json`)) {
+        console.log(chalk.red('Essa conta nao existe! informe uma conta valida.'))
+        return false
+    }
+
+    return true
 }
