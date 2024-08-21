@@ -23,6 +23,7 @@ function operation() {
                 createAccount(action)
                 break
             case 'Consultar saldo':
+                consultAccount()
                 break
             case 'Depositar':
                 deposit()
@@ -144,4 +145,26 @@ const addAmount = (accountName, amount)=> {
 const getAccount = (accountName)=> {
     const data = fs.readFileSync(`accounts/${accountName}.json`)
     return JSON.parse(data)
+}
+
+// consultar conta
+
+function consultAccount() {
+    inquirer.prompt([{
+        name:'accountName',
+        message:'Qual o nome da sua conta?'
+    }])
+    .then((answer) => {
+        const accountName = answer['accountName']
+
+        if(!checkAccount(accountName)) {
+            return consultAccount()
+        }
+
+        const account = getAccount(accountName)
+
+        console.log(chalk.green(`A conta [${accountName}] tem R$${account.balance}`))
+        operation()
+    })
+    .catch(err => console.log(err))
 }
