@@ -2,7 +2,7 @@ import inquirer from "inquirer"
 import chalk from "chalk"
 import fs from 'fs'
 
-const operation = ()=> {
+function operation() {
     inquirer.prompt([{
         type: 'list',
         name: 'action',
@@ -52,7 +52,7 @@ function createAccount(text) {
     buildAccount()
 }
 
-const buildAccount = ()=> {
+function buildAccount () {
 
     inquirer.prompt([{
         name: 'accountName',
